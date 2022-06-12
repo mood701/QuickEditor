@@ -6,6 +6,7 @@ namespace QE
 	namespace Menu
 	{
 		QUICKEDITOR_API void AddEntry(const FString& InEntryName, const FString& InEntryIcon, const FSimpleDelegate& InEntryEvent);
+		QUICKEDITOR_API void AddEntry(const FSoftObjectPath& InActionPath);
 		QUICKEDITOR_API void AddWidget(TSharedPtr<SWidget> InWidget);
 		QUICKEDITOR_API void BeginSection(const FString& InSecName);
 		QUICKEDITOR_API void EndSection();

@@ -1,6 +1,7 @@
 #include "QuickEditor.h"
 #include "QuickEditor_Internal.h"
 #include "CommandBuffer/QECmdBuffer.h"
+#include "QuickEditorEx/QEActionDataAsset.h"
 
 #define CHECK_STATE_MENU		checkf(bIsMenuState, TEXT("function in QE::Menu can only called on MenuState"));
 #define CHECK_STATE_DETAIL		checkf(bIsDetailState, TEXT("function in QE::Detail can only called on DetailState"));
@@ -172,6 +173,24 @@ namespace QE
 		Cmd.EntryIcon = InEntryIcon;
 		Cmd.EntryEvent = InEntryEvent;
 		CmdBuffer.Write(Cmd);
+	}
+
+	QUICKEDITOR_API void Menu::AddEntry(const FSoftObjectPath& InActionPath)
+	{
+		UQEActionDataAsset* ActionDataAsset = Cast<UQEActionDataAsset>(InActionPath.TryLoad());
+		if(ActionDataAsset)
+		{
+			Menu::AddEntry(ActionDataAsset->InEntryName, ActionDataAsset->InEntryIcon,
+			FSimpleDelegate::CreateLambda(
+				[InActionPath]()->void{
+					UQEActionDataAsset* ActionDataAsset = Cast<UQEActionDataAsset>(InActionPath.TryLoad());
+					if(ActionDataAsset && ActionDataAsset->Action)
+					{
+						ActionDataAsset->Action->DoAction();
+					}
+				}
+			));
+		}
 	}
 
 	void Menu::AddWidget(TSharedPtr<SWidget> InWidget)

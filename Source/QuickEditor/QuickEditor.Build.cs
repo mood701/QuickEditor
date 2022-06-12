@@ -35,6 +35,9 @@ public class QuickEditor : ModuleRules
 					"Projects" ,
 					"UnrealEd" ,
 					"PropertyEditor" ,
+					"Blutility",
+					"UMGEditor",
+					"PythonScriptPlugin",
 				});
 		}
 	}
